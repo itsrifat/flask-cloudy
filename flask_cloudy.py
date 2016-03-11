@@ -425,6 +425,7 @@ class Object(object):
                               object_name=self.name,
                               _external=longurl)
         except NotImplementedError as e:
+            print 'Exception Occured'
             object_path = '%s/%s' % (self.container.name, self.name)
             if 's3' in driver_name:
                 base_url = 'http://%s' % self.driver.connection.host
@@ -440,6 +441,7 @@ class Object(object):
                     base_url+='/'
                 url = urljoin(base_url, object_path)
             else:
+                print 'Raised Error'
                 raise e
 
         if secure:
