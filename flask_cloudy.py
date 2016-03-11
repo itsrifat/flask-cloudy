@@ -578,7 +578,7 @@ class Object(object):
             elif 'cloudfiles' in driver_name or 'swift' in driver_name:
                 return self.driver.ex_get_object_temp_url(self._obj,
                                                                method="GET",
-                                                               timeout=expires)
+                                                               timeout=timeout)
             else:
                 raise NotImplemented("This provider '%s' doesn't support or "
                                      "doesn't have a signed url "
