@@ -325,7 +325,7 @@ class Storage(object):
         :param object_name:
         :return: bool
         """
-        
+
         obj = self.get(object_name)
         if obj is not None:
             return self.driver.delete_object(obj._obj)
@@ -433,6 +433,11 @@ class Object(object):
                 url = urljoin('http://storage.googleapis.com', object_path)
             elif 'azure' in driver_name:
                 base_url = ('http://%s.blob.core.windows.net' % self.driver.key)
+                url = urljoin(base_url, object_path)
+            elif 'swift' in driver_name:
+                base_url = self.driver.connection._ex_force_base_url
+                if base_url[-1]!='/':
+                    base_url+='/'
                 url = urljoin(base_url, object_path)
             else:
                 raise e
