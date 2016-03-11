@@ -13,7 +13,7 @@ from werkzeug.datastructures import FileStorage
 from importlib import import_module
 from flask import send_file, abort, url_for, request
 import shortuuid
-from libcloud.storage.types import Provider, ObjectDoesNotExistError
+from libcloud.storage.types import Provider, ObjectDoesNotExistError, ContainerDoesNotExistError
 from libcloud.storage.providers import DRIVERS, get_driver
 from libcloud.storage.base import Object as BaseObject, StorageDriver
 from libcloud.storage.drivers import local
@@ -158,9 +158,10 @@ class Storage(object):
             self.driver = get_driver_class(provider)(**kwparams)
             if not isinstance(self.driver, StorageDriver):
                 raise AttributeError("Invalid Driver")
-
-            self.container = self.driver.get_container(container)
-
+            try:
+                self.container = self.driver.get_container(container)
+            except ContainerDoesNotExistError, e:
+                self.container = self.driver.create_container(container)
     def __iter__(self):
         """
         ie: `for item in storage`
