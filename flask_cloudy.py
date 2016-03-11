@@ -575,7 +575,7 @@ class Object(object):
                 urlkv = urlencode(params)
                 return "%s?%s" % (self.secure_url, urlkv)
 
-            elif 'cloudfiles' in driver_name:
+            elif 'cloudfiles' in driver_name or 'swift' in driver_name:
                 return self.driver.ex_get_object_temp_url(self._obj,
                                                                method="GET",
                                                                timeout=expires)
